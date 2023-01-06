@@ -1,8 +1,9 @@
 "use client";
 
 import { auth } from "@lib/firebase";
+import { UserDataContext } from "@lib/userDataContext";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   useAuthState,
   useCreateUserWithEmailAndPassword,
@@ -17,6 +18,8 @@ export default function Navbar({}) {
     useCreateUserWithEmailAndPassword(auth);
   const [signInWithEmailAndPassword, loggedInUser, signInLoading, signInError] =
     useSignInWithEmailAndPassword(auth);
+
+  const userData = useContext(UserDataContext);
 
   // useEffect(() => {
   //   console.log("authState:", authState);
@@ -48,7 +51,7 @@ export default function Navbar({}) {
       </Link>
       {authState ? (
         <div className="flex flex-row items-center gap-10">
-          <h2 className="text-gray-200">Username</h2>
+          <h2 className="text-gray-200">{userData.username}</h2>
           <button onClick={signOut}>Sign Out</button>
         </div>
       ) : (

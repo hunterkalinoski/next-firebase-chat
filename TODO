@@ -1,3 +1,7 @@
-autocomplete on an input puts weird light gray background on the corners of the input
+- Create firestore document when new auth is created which contains user data
+
+- In root layout, fetch user document on authstate changed, currently it is placeholder hard coded data
+
+? autocomplete on an input puts weird light gray background on the corners of the input
 only happens on rounded inputs
 ?? no idea why, but would like to remove this

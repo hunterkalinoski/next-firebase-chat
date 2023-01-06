@@ -12,12 +12,12 @@ export default function Page({}) {
     useCreateUserWithEmailAndPassword(auth);
 
   const { email, password } = useContext(EmailPasswordContext);
-  const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
 
   const signUp = async () => {
     const user = await createUserWithEmailAndPassword(email, password);
     // TODO: also create firestore User document with displayName
-    console.log(displayName);
+    console.log(username);
     if (!user) {
       // createError is undefined here??? even after awaiting the function?
       // it turns into 'email in use' or whatever later, but not in time
@@ -36,14 +36,14 @@ export default function Page({}) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-4">
       <div className="flex flex-row gap-16">
-        <label className="w-32 text-lg text-gray-200" htmlFor="displayNameInput">
-          Display name:
+        <label className="w-32 text-lg text-gray-200" htmlFor="usernameInput">
+          Username:
         </label>
         <input
           type="text"
-          name="displayNameInput"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
+          name="usernameInput"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
       <button className="mt-4" onClick={signUp}>
