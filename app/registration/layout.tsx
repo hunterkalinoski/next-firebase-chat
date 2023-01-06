@@ -1,4 +1,12 @@
+"use client";
+
+import { EmailPasswordContext } from "@lib/registrationContext";
+import { useState } from "react";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <>
       <div className="flex flex-col items-center gap-4 pt-32">
@@ -6,16 +14,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <label className="w-32 text-lg text-gray-200" htmlFor="emailInput">
             Email:
           </label>
-          <input type="text" name="emailInput" />
+          <input
+            type="text"
+            name="emailInput"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
         </div>
         <div className="flex flex-row gap-16">
           <label className="w-32 text-lg text-gray-200" htmlFor="passwordInput">
             Password:
           </label>
-          <input type="text" name="passwordInput" />
+          <input
+            value={password}
+            type="text"
+            name="passwordInput"
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
       </div>
-      {children}
+      {/* context allows children page to read email and password values
+          Nextjs does not provide a way to pass state from layout to children */}
+      <EmailPasswordContext.Provider value={{ email, password }}>
+        {children}
+      </EmailPasswordContext.Provider>
     </>
   );
 }

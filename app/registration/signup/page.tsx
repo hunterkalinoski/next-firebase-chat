@@ -1,8 +1,9 @@
 "use client";
 
 import { auth } from "@lib/firebase";
+import { EmailPasswordContext } from "@lib/registrationContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 export default function Page({}) {
@@ -10,8 +11,13 @@ export default function Page({}) {
   const [createUserWithEmailAndPassword, registeredUser, createLoading, createError] =
     useCreateUserWithEmailAndPassword(auth);
 
+  const { email, password } = useContext(EmailPasswordContext);
+  const [displayName, setDisplayName] = useState("");
+
   const signUp = async () => {
-    const user = await createUserWithEmailAndPassword("test@gmail.com", "password");
+    const user = await createUserWithEmailAndPassword(email, password);
+    // TODO: also create firestore User document with displayName
+    console.log(displayName);
     if (!user) {
       // createError is undefined here??? even after awaiting the function?
       // it turns into 'email in use' or whatever later, but not in time
@@ -21,9 +27,11 @@ export default function Page({}) {
     }
   };
 
+  // allows navigation to '/' to be done immediately after sign in was successful
+  // otherwise, takes 500ms or something to transition pages, but auth state change can be observed in navbar
   useEffect(() => {
-    console.log("createError: ", createError);
-  }, [createError]);
+    router.prefetch("/");
+  });
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-4">
@@ -32,9 +40,10 @@ export default function Page({}) {
           Display name:
         </label>
         <input
-          className="rounded-lg bg-slate-500 px-2 py-1 text-gray-200 focus:outline focus:outline-1 focus:outline-slate-300"
           type="text"
           name="displayNameInput"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
         />
       </div>
       <button className="mt-4" onClick={signUp}>

@@ -7,7 +7,7 @@ button {
 }
 
 input {
-  @apply rounded-lg bg-slate-500 px-2 py-1 text-gray-200 focus:outline focus:outline-1 focus:outline-slate-300;
+  @apply rounded-lg bg-slate-600 px-2 py-1 text-gray-200 hover:outline hover:outline-1 hover:outline-slate-500 focus:outline focus:outline-1 focus:outline-slate-300;
 }
 
 /* when autofilling, want to keep same styles as normal input */
@@ -15,7 +15,9 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px rgb(100, 116, 139) inset !important;
-  box-shadow: 0 0 0 30px rgb(100, 116, 139) inset !important;
+  -webkit-box-shadow: 0 0 0 30px rgb(71, 85, 105) inset !important;
+  box-shadow: 0 0 0 30px rgb(71, 85, 105) inset !important;
   -webkit-text-fill-color: rgb(229, 231, 235) !important;
+  /* the blinking cursor */
+  caret-color: rgb(229, 231, 235);
 }
