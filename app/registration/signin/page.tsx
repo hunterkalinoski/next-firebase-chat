@@ -3,8 +3,9 @@
 import { auth } from "@lib/firebase";
 import { EmailPasswordContext } from "@lib/registrationContext";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { ColorRing } from "react-loader-spinner";
 
 export default function Page({}) {
   const router = useRouter();
@@ -12,15 +13,19 @@ export default function Page({}) {
     useSignInWithEmailAndPassword(auth);
 
   const { email, password } = useContext(EmailPasswordContext);
+  const [loading, setLoading] = useState(false);
 
   const signIn = async () => {
+    setLoading(true);
     const user = await signInWithEmailAndPassword(email, password);
     if (!user) {
       // signInError is undefined here??? even after awaiting the function?
       // it turns into 'email in use' or whatever later, but not in time
       // alert(signInError?.message);
       alert("failed to sign in");
+      setLoading(false);
     } else {
+      setLoading(false);
       router.push("/");
     }
   };
@@ -32,8 +37,19 @@ export default function Page({}) {
   });
 
   return (
-    <div className="mt-8 flex items-center justify-center">
+    <div className="mt-8 flex flex-col items-center justify-center">
       <button onClick={signIn}>Sign in</button>
+      {loading && (
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={["#64748b", "#64748b", "#64748b", "#64748b", "#64748b"]}
+        />
+      )}
     </div>
   );
 }

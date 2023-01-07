@@ -1,9 +1,9 @@
 "use client";
 
 import Navbar from "@components/Navbar";
-import { auth } from "@lib/firebase";
-import { data } from "@lib/initial-counter";
+import { auth, firestore } from "@lib/firebase";
 import { UserDataContext } from "@lib/userDataContext";
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./globals.css";
@@ -14,18 +14,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   // replace with grabbing user document from firestore
   async function fetchUserData() {
-    return { uid: "myuid", email: "myemail", username: "myusername" };
+    const currUser = auth.currentUser;
+    if (!currUser) {
+      return null;
+    }
+    const uid = currUser.uid;
+    const docRef = doc(firestore, "users", uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap;
   }
 
   // when auth state changes (log in or sign out), set userdata
   useEffect(() => {
     fetchUserData().then((userDoc) => {
-      // this would likely change to something like:
-      // uid: userDoc.id
-      // email: userDoc.data.email
-      // username: userDoc.data.username
-      // uid not stored in the document, because it will be the documents name
-      const user = { uid: userDoc.uid, email: userDoc.email, username: userDoc.username };
+      let user;
+      // if userdoc doesnt exist (when this fn called after signed out for example), set fields to default
+      if (!userDoc) {
+        user = { uid: "", email: "", username: "" };
+      } else {
+        user = {
+          uid: userDoc.id,
+          email: userDoc.data()?.email,
+          username: userDoc.data()?.username,
+        };
+      }
       setUserData(user);
     });
   }, [authState]);

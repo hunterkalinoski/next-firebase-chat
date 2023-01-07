@@ -1,10 +1,12 @@
 "use client";
 
-import { auth } from "@lib/firebase";
+import { auth, firestore } from "@lib/firebase";
 import { EmailPasswordContext } from "@lib/registrationContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { ColorRing } from "react-loader-spinner";
 
 export default function Page({}) {
   const router = useRouter();
@@ -13,25 +15,40 @@ export default function Page({}) {
 
   const { email, password } = useContext(EmailPasswordContext);
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const signUp = async () => {
-    const user = await createUserWithEmailAndPassword(email, password);
-    // TODO: also create firestore User document with displayName
-    console.log(username);
-    if (!user) {
-      // createError is undefined here??? even after awaiting the function?
-      // it turns into 'email in use' or whatever later, but not in time
-      alert("failed to sign up");
-    } else {
-      router.push("/");
+    if (username == "") {
+      alert("You must enter a username!");
+      return;
     }
+    setLoading(true);
+
+    // create user auth
+    const userCredential = await createUserWithEmailAndPassword(email, password);
+    if (!userCredential) {
+      alert("failed to sign up!");
+      setLoading(false);
+      return;
+    }
+    const user = userCredential.user;
+
+    // create user document
+    await setDoc(doc(firestore, "users", user.uid), {
+      email: user.email,
+      username,
+      createdAt: serverTimestamp(),
+    });
+    setLoading(false);
+
+    router.push("/");
   };
 
   // allows navigation to '/' to be done immediately after sign in was successful
   // otherwise, takes 500ms or something to transition pages, but auth state change can be observed in navbar
   useEffect(() => {
     router.prefetch("/");
-  });
+  }, [router]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-4">
@@ -49,6 +66,17 @@ export default function Page({}) {
       <button className="mt-4" onClick={signUp}>
         Sign Up
       </button>
+      {loading && (
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={["#64748b", "#64748b", "#64748b", "#64748b", "#64748b"]}
+        />
+      )}
     </div>
   );
 }
