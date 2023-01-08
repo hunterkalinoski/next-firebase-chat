@@ -21,28 +21,32 @@ export default function MessageFeed({}) {
   const MessagesComponent = () => {
     if (collectionSnapshot) {
       return (
-        <div className="flex max-h-[36rem] w-5/6 flex-col items-start gap-8 overflow-y-scroll rounded-lg bg-slate-800 p-10">
-          {collectionSnapshot?.docs.map((doc) =>
-            authState && userData.uid === doc.data().userID ? (
-              // messages that YOU sent (logged in user is the author)
-              <div
-                className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-gray-200"
-                key={doc.id}
-              >
-                <h3 className="text-2xl">{doc.data().author}</h3>
-                <p>{doc.data().content}</p>
-              </div>
-            ) : (
-              // messages from other people
-              <div
-                className="flex max-w-[80%] flex-col items-start rounded-lg bg-slate-700 p-4 pr-12 text-gray-200"
-                key={doc.id}
-              >
-                <h3 className="text-2xl">{doc.data().author}</h3>
-                <p>{doc.data().content}</p>
-              </div>
-            )
-          )}
+        <div className="flex h-[36rem] w-5/6 flex-col items-start gap-8 overflow-y-scroll rounded-lg bg-slate-800 p-10">
+          {/* .slice(0).reverse() reverses array so newest message is last (can be put at bototm) */}
+          {collectionSnapshot?.docs
+            .slice(0)
+            .reverse()
+            .map((doc) =>
+              authState && userData.uid === doc.data().userID ? (
+                // messages that YOU sent (logged in user is the author)
+                <div
+                  className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-gray-200"
+                  key={doc.id}
+                >
+                  <h3 className="text-2xl">{doc.data().author}</h3>
+                  <p>{doc.data().content}</p>
+                </div>
+              ) : (
+                // messages from other people
+                <div
+                  className="flex max-w-[80%] flex-col items-start rounded-lg bg-slate-700 p-4 pr-12 text-gray-200"
+                  key={doc.id}
+                >
+                  <h3 className="text-2xl">{doc.data().author}</h3>
+                  <p>{doc.data().content}</p>
+                </div>
+              )
+            )}
         </div>
       );
     } else {
