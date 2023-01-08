@@ -55,7 +55,7 @@ export default function Page({}) {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 pt-4">
-      <div className="flex flex-row gap-16">
+      <div className="flex flex-row gap-4 md:gap-16">
         <label className="w-32 text-lg text-gray-200" htmlFor="usernameInput">
           Username:
         </label>
