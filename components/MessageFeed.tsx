@@ -3,13 +3,14 @@
 import { auth, firestore } from "@lib/firebase";
 import { UserDataContext } from "@lib/userDataContext";
 import { collection, limit, orderBy, query } from "firebase/firestore";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function MessageFeed({}) {
   const [authState] = useAuthState(auth);
   const userData = useContext(UserDataContext);
+  const bottomOfMessageFeed = useRef<null | HTMLDivElement>(null);
 
   const messagesQuery = query(
     collection(firestore, "messages"),
@@ -17,6 +18,10 @@ export default function MessageFeed({}) {
     limit(10)
   );
   const [collectionSnapshot, loading, error] = useCollection(messagesQuery);
+
+  useEffect(() => {
+    bottomOfMessageFeed.current?.scrollIntoView();
+  });
 
   const MessagesComponent = () => {
     if (collectionSnapshot) {
@@ -47,6 +52,7 @@ export default function MessageFeed({}) {
                 </div>
               )
             )}
+          <div ref={bottomOfMessageFeed}></div>
         </div>
       );
     } else {
