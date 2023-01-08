@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 button {
-  @apply rounded-lg border border-slate-500 bg-white bg-opacity-10 px-4 py-1 text-gray-200 hover:bg-opacity-30;
+  @apply rounded-lg border border-slate-500 bg-white bg-opacity-10 px-2 py-1 text-gray-200 hover:bg-opacity-30 md:px-4;
 }
 
 input,

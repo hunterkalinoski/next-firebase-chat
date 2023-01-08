@@ -21,6 +21,9 @@ export default function Page({}) {
     if (username == "") {
       alert("You must enter a username!");
       return;
+    } else if (username.length > 10) {
+      alert("Username may be 10 characters max");
+      return;
     }
     setLoading(true);
 

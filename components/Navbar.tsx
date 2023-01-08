@@ -13,12 +13,12 @@ export default function Navbar({}) {
   const userData = useContext(UserDataContext);
 
   return (
-    <div className="flex flex-row items-center justify-between bg-slate-800 px-20 py-4">
+    <div className="flex flex-row items-center justify-between bg-slate-800 px-6 py-4 md:px-20">
       <Link href="/">
         <h2 className="text-2xl font-bold text-gray-200 hover:underline">Next-Firebase Chat</h2>
       </Link>
       {authState ? (
-        <div className="flex flex-row items-center gap-10">
+        <div className="flex flex-row items-center gap-10 md:gap-2">
           <h2 className="text-gray-200">{userData.username}</h2>
           <button onClick={signOut}>Sign Out</button>
         </div>
