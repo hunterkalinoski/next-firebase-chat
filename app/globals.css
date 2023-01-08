@@ -12,7 +12,7 @@ textarea {
 }
 
 textarea {
-  @apply resize-none;
+  @apply resize-none border-8 border-solid border-slate-600;
 }
 
 /* when autofilling, want to keep same styles as normal input */
@@ -25,4 +25,32 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: rgb(229, 231, 235) !important;
   /* the blinking cursor */
   caret-color: rgb(229, 231, 235);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(51, 65, 85);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(71, 85, 105);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(100, 116, 139);
+}
+
+textarea::-webkit-scrollbar-track {
+  background: rgb(51, 65, 85);
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: rgb(100, 116, 139);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: rgb(148, 163, 184);
 }
