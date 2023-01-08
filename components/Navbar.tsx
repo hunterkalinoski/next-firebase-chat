@@ -3,46 +3,14 @@
 import { auth } from "@lib/firebase";
 import { UserDataContext } from "@lib/userDataContext";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
-import {
-  useAuthState,
-  useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
-  useSignOut,
-} from "react-firebase-hooks/auth";
+import { useContext } from "react";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 
 export default function Navbar({}) {
-  const [authState, authLoading, authError] = useAuthState(auth);
-  const [signOut, signOutLoading, signOutError] = useSignOut(auth);
-  const [createUserWithEmailAndPassword, registeredUser, createLoading, createError] =
-    useCreateUserWithEmailAndPassword(auth);
-  const [signInWithEmailAndPassword, loggedInUser, signInLoading, signInError] =
-    useSignInWithEmailAndPassword(auth);
+  const [authState] = useAuthState(auth);
+  const [signOut] = useSignOut(auth);
 
   const userData = useContext(UserDataContext);
-
-  // useEffect(() => {
-  //   console.log("authState:", authState);
-  //   console.log("loading", authLoading);
-  //   console.log("error", authError);
-  // }, [authState, authLoading, authError]);
-
-  // useEffect(() => {
-  //   console.log("registeredUser:", registeredUser);
-  //   console.log("createLoading:", createLoading);
-  //   console.log("createError:", createError);
-  // }, [registeredUser, createLoading, createError]);
-
-  // useEffect(() => {
-  //   console.log("loggedInUser: ", loggedInUser);
-  //   console.log("signInLoading: ", signInLoading);
-  //   console.log("signInError: ", signInError);
-  // }, [loggedInUser, signInLoading, signInError]);
-
-  // useEffect(() => {
-  //   console.log("signOutLoading: ", signOutLoading);
-  //   console.log("signOutError: ", signOutError);
-  // }, [signOutLoading, signOutError]);
 
   return (
     <div className="flex flex-row items-center justify-between bg-slate-800 px-20 py-4">
@@ -64,24 +32,6 @@ export default function Navbar({}) {
           </Link>
         </div>
       )}
-      {/* <button
-        onClick={() => createUserWithEmailAndPassword("test@gmail.com", "password")}
-        className="rounded-lg border border-black bg-black bg-opacity-10 px-20 py-1 hover:bg-opacity-30"
-      >
-        Sign up
-      </button>
-      <button
-        onClick={() => signInWithEmailAndPassword("test@gmail.com", "password")}
-        className="rounded-lg border border-black bg-black bg-opacity-10 px-20 py-1 hover:bg-opacity-30"
-      >
-        Sign in
-      </button>
-      <button
-        onClick={signOut}
-        className="rounded-lg border border-black bg-black bg-opacity-10 px-20 py-1 hover:bg-opacity-30"
-      >
-        Sign Out
-      </button> */}
     </div>
   );
 }

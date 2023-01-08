@@ -1,11 +1,16 @@
 "use client";
 
-import { firestore } from "@lib/firebase";
+import { auth, firestore } from "@lib/firebase";
+import { UserDataContext } from "@lib/userDataContext";
 import { collection, limit, orderBy, query } from "firebase/firestore";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function MessageFeed({}) {
+  const [authState] = useAuthState(auth);
+  const userData = useContext(UserDataContext);
+
   const messagesQuery = query(
     collection(firestore, "messages"),
     orderBy("createdAt", "desc"),
@@ -16,13 +21,28 @@ export default function MessageFeed({}) {
   const MessagesComponent = () => {
     if (collectionSnapshot) {
       return (
-        <div className="flex max-h-[36rem] w-5/6 flex-col gap-4 overflow-y-scroll rounded-lg bg-slate-800 p-10">
-          {collectionSnapshot?.docs.map((doc) => (
-            <div className="w-4/5 rounded-lg bg-slate-700 p-4 text-gray-200" key={doc.id}>
-              <h3 className=" place-items-start justify-self-end text-2xl">{doc.data().author}</h3>
-              <p>{doc.data().content}</p>
-            </div>
-          ))}
+        <div className="flex max-h-[36rem] w-5/6 flex-col items-start gap-8 overflow-y-scroll rounded-lg bg-slate-800 p-10">
+          {collectionSnapshot?.docs.map((doc) =>
+            authState && userData.uid === doc.data().userID ? (
+              // messages that YOU sent (logged in user is the author)
+              <div
+                className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-gray-200"
+                key={doc.id}
+              >
+                <h3 className="text-2xl">{doc.data().author}</h3>
+                <p>{doc.data().content}</p>
+              </div>
+            ) : (
+              // messages from other people
+              <div
+                className="flex max-w-[80%] flex-col items-start rounded-lg bg-slate-700 p-4 pr-12 text-gray-200"
+                key={doc.id}
+              >
+                <h3 className="text-2xl">{doc.data().author}</h3>
+                <p>{doc.data().content}</p>
+              </div>
+            )
+          )}
         </div>
       );
     } else {
