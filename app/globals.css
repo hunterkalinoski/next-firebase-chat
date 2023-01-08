@@ -12,7 +12,7 @@ textarea {
 }
 
 textarea {
-  @apply resize-none border-8 border-solid border-slate-600;
+  @apply resize-none overflow-y-scroll border-8 border-solid border-slate-600;
 }
 
 /* when autofilling, want to keep same styles as normal input */

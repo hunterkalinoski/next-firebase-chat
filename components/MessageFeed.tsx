@@ -6,6 +6,7 @@ import { collection, limit, orderBy, query } from "firebase/firestore";
 import { useContext, useEffect, useRef } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { ColorRing } from "react-loader-spinner";
 
 export default function MessageFeed({}) {
   const [authState] = useAuthState(auth);
@@ -35,7 +36,7 @@ export default function MessageFeed({}) {
               authState && userData.uid === doc.data().userId ? (
                 // messages that YOU sent (logged in user is the author)
                 <div
-                  className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-gray-200"
+                  className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-end text-gray-200"
                   key={doc.id}
                 >
                   <h3 className="text-2xl">{doc.data().author}</h3>
@@ -56,7 +57,17 @@ export default function MessageFeed({}) {
         </div>
       );
     } else {
-      return <div>No messages!</div>;
+      return (
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={["#64748b", "#64748b", "#64748b", "#64748b", "#64748b"]}
+        />
+      );
     }
   };
 
