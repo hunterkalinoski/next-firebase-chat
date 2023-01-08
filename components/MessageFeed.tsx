@@ -21,13 +21,13 @@ export default function MessageFeed({}) {
   const MessagesComponent = () => {
     if (collectionSnapshot) {
       return (
-        <div className="flex h-[36rem] w-5/6 flex-col items-start gap-8 overflow-y-scroll rounded-lg bg-slate-800 p-10">
+        <div className="flex h-[36rem] w-5/6 flex-col items-start gap-8 overflow-y-scroll rounded-lg border-8 border-solid border-slate-800 bg-slate-800 p-10">
           {/* .slice(0).reverse() reverses array so newest message is last (can be put at bototm) */}
           {collectionSnapshot?.docs
             .slice(0)
             .reverse()
             .map((doc) =>
-              authState && userData.uid === doc.data().userID ? (
+              authState && userData.uid === doc.data().userId ? (
                 // messages that YOU sent (logged in user is the author)
                 <div
                   className="flex max-w-[80%] flex-col items-end self-end rounded-lg bg-slate-700 p-4 pl-12 text-gray-200"
