@@ -37,16 +37,20 @@ export default function Page({}) {
   });
 
   return (
-    <div className="mt-8 flex flex-col items-center justify-center">
-      <button onClick={signIn}>Sign in</button>
+    <div className='mt-8 flex flex-col items-center justify-center'>
+      <button
+      //onClick={signIn}
+      >
+        Sign in
+      </button>
       {loading && (
         <ColorRing
           visible={true}
-          height="80"
-          width="80"
-          ariaLabel="blocks-loading"
+          height='80'
+          width='80'
+          ariaLabel='blocks-loading'
           wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
+          wrapperClass='blocks-wrapper'
           colors={["#64748b", "#64748b", "#64748b", "#64748b", "#64748b"]}
         />
       )}

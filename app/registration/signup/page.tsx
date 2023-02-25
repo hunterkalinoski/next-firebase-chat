@@ -54,29 +54,32 @@ export default function Page({}) {
   }, [router]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 pt-4">
-      <div className="flex flex-row gap-4 md:gap-16">
-        <label className="w-32 text-lg text-gray-200" htmlFor="usernameInput">
+    <div className='flex flex-col items-center justify-center gap-4 pt-4'>
+      <div className='flex flex-row gap-4 md:gap-16'>
+        <label className='w-32 text-lg text-gray-200' htmlFor='usernameInput'>
           Username:
         </label>
         <input
-          type="text"
-          name="usernameInput"
+          type='text'
+          name='usernameInput'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <button className="mt-4" onClick={signUp}>
+      <button
+        className='mt-4'
+        //onClick={signUp}
+      >
         Sign Up
       </button>
       {loading && (
         <ColorRing
           visible={true}
-          height="80"
-          width="80"
-          ariaLabel="blocks-loading"
+          height='80'
+          width='80'
+          ariaLabel='blocks-loading'
           wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
+          wrapperClass='blocks-wrapper'
           colors={["#64748b", "#64748b", "#64748b", "#64748b", "#64748b"]}
         />
       )}
